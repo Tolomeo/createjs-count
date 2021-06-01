@@ -1,6 +1,6 @@
 export default {
   stage: "#stage",
-  width: 400,
-  height: 900,
+  width: 375,
+  height: 667,
   framerate: 60,
 } as const;
