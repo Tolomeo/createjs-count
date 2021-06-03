@@ -52,7 +52,7 @@ class GameOver extends createjs.Container {
     text.x = settings.width / 2;
     text.y = settings.height / 3;
 
-    const restartButton = new Button({ text: "Hey button", onClick: onRestart });
+    const restartButton = new Button({ text: "Restart", onClick: onRestart });
     restartButton.regX = restartButton.getBounds().width / 2;
     restartButton.regY = restartButton.getBounds().height / 2;
     restartButton.x = settings.width / 2;

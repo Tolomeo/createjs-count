@@ -53,56 +53,28 @@ class ButtonBaseState extends ButtonBase {
   }
 }
 
-type ButtonStatesProps = {
-  text: string;
-  mode?: string;
-  startPosition?: number;
-  loop?: boolean;
-};
-
-class ButtonStates extends createjs.MovieClip {
-  out: ButtonBaseState;
-
-  over: ButtonHoverState;
-
-  down: ButtonActiveState;
-
-  constructor({ text, mode, startPosition, loop }: ButtonStatesProps) {
-    super(mode, startPosition, loop, { out: 0, over: 1, down: 2 });
-
-    this.out = new ButtonBaseState({ text });
-    this.over = new ButtonHoverState({ text });
-    this.down = new ButtonActiveState({ text });
-
-    this.timeline.addTween(
-      createjs.Tween.get({})
-        .to({ state: [{ t: this.out }] })
-        .to({ state: [{ t: this.over }] }, 1)
-        .to({ state: [{ t: this.down }] }, 1)
-        .wait(1),
-    );
-  }
-}
-
 type Props = {
   text: string;
   onClick: () => unknown;
 };
 
-class Button extends createjs.Container {
-  button: ButtonStates;
-
-  buttonHelper: createjs.ButtonHelper;
+class Button extends createjs.MovieClip {
+  helper: createjs.ButtonHelper;
 
   constructor({ text, onClick }: Props) {
-    super();
+    super(undefined, undefined, undefined, { base: 0, hover: 1, active: 2 });
 
-    this.button = new ButtonStates({ text });
-    this.buttonHelper = new createjs.ButtonHelper(this.button);
+    this.timeline.addTween(
+      createjs.Tween.get({})
+        .to({ state: [{ t: new ButtonBaseState({ text }) }] })
+        .to({ state: [{ t: new ButtonHoverState({ text }) }] }, 1)
+        .to({ state: [{ t: new ButtonActiveState({ text }) }] }, 1)
+        .wait(1),
+    );
 
-    this.button.on("click", onClick);
+    this.helper = new createjs.ButtonHelper(this, "base", "hover", "active");
 
-    this.addChild(this.button);
+    this.on("click", onClick);
   }
 }
 
