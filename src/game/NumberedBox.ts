@@ -1,33 +1,52 @@
 /* eslint-disable max-classes-per-file */
+import { numberedBox } from "../settings";
 
-class Box extends createjs.MovieClip {
-  text: createjs.Text;
+class NumberedBoxGraphics extends createjs.MovieClip {
+  static text(number: string) {
+    const text = new createjs.Text(number, numberedBox.font, numberedBox.color);
+    text.textAlign = "center";
+    text.textBaseline = "middle";
+    text.x = numberedBox.width * 0.5;
+    text.y = numberedBox.height * 0.5;
 
-  shape: createjs.Shape;
+    return text;
+  }
 
-  constructor(text: string) {
+  static shape() {
+    const shape = new createjs.Shape(
+      new createjs.Graphics()
+        .beginStroke(numberedBox.stroke)
+        .beginFill(numberedBox.fill)
+        .drawRect(0, 0, numberedBox.width, numberedBox.height),
+    );
+
+    return shape;
+  }
+
+  constructor(number: string) {
     super();
 
-    this.text = new createjs.Text(text, "30px 'Arial'", "white");
-    this.text.textAlign = "center";
-    this.text.lineHeight = 50;
-    this.text.lineWidth = 50;
-    this.text.setTransform(25, 15);
-    this.timeline.addTween(createjs.Tween.get(this.text).wait(1));
-
-    this.shape = new createjs.Shape();
-    this.shape.graphics.beginStroke("white").drawRect(0, 0, 50, 50);
-    this.timeline.addTween(createjs.Tween.get(this.shape).wait(1));
+    this.timeline.addTween(createjs.Tween.get(NumberedBoxGraphics.text(number)).wait(1));
+    this.timeline.addTween(createjs.Tween.get(NumberedBoxGraphics.shape()).wait(1));
   }
 }
 
-class NumberedBox extends createjs.Container {
+type Props = {
   number: number;
+  onClick: (numberedBox: NumberedBox) => void;
+};
+class NumberedBox extends createjs.Container {
+  public number: number;
 
-  constructor(number: number) {
+  constructor({ number, onClick }: Props) {
     super();
     this.number = number;
-    this.addChild(new Box(String(number)));
+
+    this.addChild(new NumberedBoxGraphics(String(number)));
+
+    this.setBounds(0, 0, numberedBox.width, numberedBox.height);
+
+    this.on("click", () => onClick(this));
   }
 }
 

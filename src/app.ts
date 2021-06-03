@@ -1,20 +1,20 @@
-import config from "./config";
+import settings from "./settings";
 import Game from "./game";
 import "./styles.css";
 
 class App {
   static getDOMStage() {
-    const canvas = document.querySelector(config.stage);
+    const canvas = document.querySelector(settings.stage);
 
     if (!canvas) {
-      throw new Error(`Stage not found, no element is matching "${config.stage}" selection`);
+      throw new Error(`Stage not found, no element is matching "${settings.stage}" selection`);
     }
 
     return canvas as HTMLCanvasElement;
   }
 
   static getStageScale() {
-    return Math.min(window.innerWidth / config.width, window.innerHeight / config.height);
+    return Math.min(window.innerWidth / settings.width, window.innerHeight / settings.height);
   }
 
   static getDevicePixelRatio() {
@@ -37,7 +37,9 @@ class App {
   }
 
   public initialise() {
-    createjs.Ticker.framerate = config.framerate;
+    createjs.Touch.enable(this.stage);
+
+    createjs.Ticker.framerate = settings.framerate;
 
     createjs.Ticker.on("tick", () => {
       this.stage.update();
@@ -45,8 +47,10 @@ class App {
 
     this.resize();
 
-    this.game = new Game(this.stage, config);
-    
+    this.stage.enableMouseOver();
+
+    this.game = new Game(this.stage);
+
     window.addEventListener("resize", this.resize.bind(this));
 
     return this;
@@ -56,8 +60,8 @@ class App {
     const stageScale = App.getStageScale();
     const devicePxRatio = App.getDevicePixelRatio();
     // the canvas dimensions are calculated for it to extend up to meet viewport edges maintaining its ratio
-    const scaledWidth = config.width * stageScale;
-    const scaledHeight = config.height * stageScale;
+    const scaledWidth = settings.width * stageScale;
+    const scaledHeight = settings.height * stageScale;
     // the canvas css dimensions are set to meet the viewport dimensions
     this.canvas.style.width = `${scaledWidth}px`;
     this.canvas.style.height = `${scaledHeight}px`;
