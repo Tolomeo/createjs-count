@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "createjs": "^1.0.1",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "robot3": "^0.2.19"
   },
   "devDependencies": {
     "@types/createjs": "^0.0.29",

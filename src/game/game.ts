@@ -1,62 +1,54 @@
-import settings from "../settings";
-import GameOverScreen from "./GameOver";
-import NumberedBox from "./NumberedBox";
+import { createMachine, interpret, state, transition, Service } from "robot3";
+// import settings from "../settings";
+import GameCount from "./GameCount";
+import GameMenu from "./GameMenu";
+import GameOver from "./GameOver";
+
+const gameMachine = createMachine("menu", {
+  menu: state(transition("start", "count")),
+  count: state(transition("done", "over")),
+  over: state(transition("restart", "count"), transition("quit", "menu")),
+});
 
 class Game {
   private stage: createjs.Stage;
 
-  private numberedBoxes: NumberedBox[];
+  private state: Service<typeof gameMachine>;
+
+  private screen: keyof typeof gameMachine["states"];
 
   constructor(stage: createjs.Stage) {
     this.stage = stage;
-    this.numberedBoxes = [];
+    this.state = interpret(gameMachine, this.onStateChange.bind(this));
+    this.screen = this.state.machine.current;
 
-    this.start();
+    this.render();
   }
 
-  private getNumberedBoxes(amount: number) {
-    const boxes = [];
-    // eslint-disable-next-line no-plusplus
-    for (let number = amount; number > 0; number--) {
-      const box = new NumberedBox({ number, onClick: this.onNumberedBoxClick.bind(this) });
-      const boxBounds = box.getBounds();
-      box.x = Math.random() * (settings.width - boxBounds.width);
-      box.y = Math.random() * (settings.height - boxBounds.height);
+  private onStateChange() {
+    if (this.screen === this.state.machine.current) return;
 
-      boxes.push(box);
-    }
-
-    return boxes;
+    this.screen = this.state.machine.current;
+    this.render();
   }
 
-  private onNumberedBoxClick(numberedBox: NumberedBox) {
-    const { numberedBoxes } = this;
-
-    if (numberedBox === numberedBoxes[numberedBoxes.length - 1]) {
-      this.stage.removeChild(numberedBoxes.pop()!);
-    }
-
-    if (!numberedBoxes.length) {
-      this.renderGameOver();
-    }
-  }
-
-  start() {
-    this.numberedBoxes = this.getNumberedBoxes(1);
-    this.renderNumberedBoxes();
-  }
-
-  restart() {
+  render() {
     this.stage.removeAllChildren();
-    this.start();
-  }
 
-  renderNumberedBoxes() {
-    this.stage.addChild(...this.numberedBoxes);
-  }
-
-  renderGameOver() {
-    this.stage.addChild(new GameOverScreen({ onRestart: this.restart.bind(this) }));
+    switch (this.screen) {
+      case "menu":
+        this.stage.addChild(new GameMenu({ start: () => this.state.send("start") }));
+        break;
+      case "count":
+        this.stage.addChild(new GameCount({ done: () => this.state.send("done") }));
+        break;
+      case "over":
+        this.stage.addChild(
+          new GameOver({ restart: () => this.state.send("restart"), quit: () => this.state.send("quit") }),
+        );
+        break;
+      default:
+    }
   }
 }
 

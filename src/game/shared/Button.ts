@@ -29,9 +29,6 @@ class ButtonBase extends createjs.Container {
       new createjs.Graphics().beginFill(fill).drawRoundRect(0, 0, buttonWidth, buttonHeight, radius),
     );
 
-    this.regX = buttonWidth / 2;
-    this.regY = buttonHeight / 2;
-
     this.addChild(button, label);
     this.setBounds(0, 0, buttonWidth, buttonHeight);
   }
