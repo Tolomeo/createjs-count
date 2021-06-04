@@ -47,7 +47,7 @@ class App {
 
     this.resize();
 
-    this.stage.enableMouseOver();
+    this.stage.enableMouseOver(10);
 
     this.game = new Game(this.stage);
 

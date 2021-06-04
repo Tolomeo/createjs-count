@@ -1,53 +1,22 @@
-/* eslint-disable max-classes-per-file */
-import { numberedBox } from "../settings";
-
-class NumberedBoxGraphics extends createjs.MovieClip {
-  static text(number: string) {
-    const text = new createjs.Text(number, numberedBox.font, numberedBox.color);
-    text.textAlign = "center";
-    text.textBaseline = "middle";
-    text.x = numberedBox.width * 0.5;
-    text.y = numberedBox.height * 0.5;
-
-    return text;
-  }
-
-  static shape() {
-    const shape = new createjs.Shape(
-      new createjs.Graphics()
-        .beginStroke(numberedBox.stroke)
-        .beginFill(numberedBox.fill)
-        .drawRect(0, 0, numberedBox.width, numberedBox.height),
-    );
-
-    return shape;
-  }
-
-  constructor(number: string) {
-    super();
-
-    this.timeline.addTween(createjs.Tween.get(NumberedBoxGraphics.text(number)).wait(1));
-    this.timeline.addTween(createjs.Tween.get(NumberedBoxGraphics.shape()).wait(1));
-  }
-}
+import Button from "./shared/Button";
 
 type Props = {
   number: number;
-  onClick: (numberedBox: NumberedBox) => void;
+  onClick: (numberedBox: NumberedButton) => void;
 };
-class NumberedBox extends createjs.Container {
+class NumberedButton extends createjs.Container {
   public number: number;
+
+  private button: Button;
 
   constructor({ number, onClick }: Props) {
     super();
     this.number = number;
-
-    this.addChild(new NumberedBoxGraphics(String(number)));
-
-    this.setBounds(0, 0, numberedBox.width, numberedBox.height);
-
+    this.button = new Button({ text: String(number), width: 50, height: 50 });
+    this.addChild(this.button);
     this.on("click", () => onClick(this));
+    this.setBounds(0, 0, 50, 50);
   }
 }
 
-export default NumberedBox;
+export default NumberedButton;
