@@ -8,12 +8,10 @@ type BaseProps = {
   fill: string;
 };
 
-const size = 50;
-const font = "30px 'Open Sans'";
 class ButtonBase extends createjs.Container {
-  label: createjs.Text;
+  text: createjs.Text;
 
-  labelOutline: createjs.Text;
+  outline: createjs.Text;
 
   area: createjs.Shape;
 
@@ -21,35 +19,35 @@ class ButtonBase extends createjs.Container {
 
   constructor({ text, color, fill }: BaseProps) {
     super();
-    this.label = new createjs.Text(text, font, color);
+    this.text = new createjs.Text(text.toUpperCase(), "30px 'Open Sans'", color);
 
-    const hypotenuse = pythagorean(size, size);
+    const hypotenuse = pythagorean(50, 50);
     const dimensions = {
-      width: Math.max(this.label.getMeasuredWidth(), hypotenuse),
-      height: Math.max(this.label.getMeasuredHeight(), hypotenuse),
+      width: Math.max(this.text.getMeasuredWidth(), hypotenuse),
+      height: Math.max(this.text.getMeasuredHeight(), hypotenuse),
     };
     const center = { x: dimensions.width * 0.5, y: dimensions.height * 0.5 };
 
     this.area = new createjs.Shape(new createjs.Graphics().drawRect(0, 0, dimensions.width, dimensions.height));
 
-    this.label.textAlign = "center";
-    this.label.textBaseline = "middle";
-    this.label.x = center.x;
-    this.label.y = center.y;
+    this.text.textAlign = "center";
+    this.text.textBaseline = "middle";
+    this.text.x = center.x;
+    this.text.y = center.y;
 
-    this.labelOutline = this.label.clone();
-    this.labelOutline.color = fill;
-    this.labelOutline.outline = 3;
+    this.outline = this.text.clone();
+    this.outline.color = fill;
+    this.outline.outline = 3;
 
-    this.shape = new createjs.Shape(new createjs.Graphics().beginFill(fill).drawRect(0, 0, size, size));
-    this.shape.regX = size * 0.5;
-    this.shape.regY = size * 0.5;
+    this.shape = new createjs.Shape(new createjs.Graphics().beginFill(fill).drawRect(0, 0, 50, 50));
+    this.shape.regX = 25;
+    this.shape.regY = 25;
     this.shape.x = center.x;
     this.shape.y = center.y;
     this.shape.rotation = 45;
 
     this.setBounds(0, 0, dimensions.width, dimensions.height);
-    this.addChild(this.area, this.shape, this.labelOutline, this.label);
+    this.addChild(this.area, this.shape, this.outline, this.text);
   }
 }
 
@@ -60,12 +58,12 @@ type Props = {
 class Button extends createjs.MovieClip {
   helper: createjs.ButtonHelper;
 
-  constructor(props: Props) {
+  constructor({ text }: Props) {
     super(undefined, undefined, undefined, { normal: 0, hover: 1, active: 2 });
 
-    const normal = new ButtonBase({ ...props, color: "white", fill: "#4C4C4C" });
-    const hover = new ButtonBase({ ...props, color: "white", fill: "#606060" });
-    const active = new ButtonBase({ ...props, color: "white", fill: "#404040" });
+    const normal = new ButtonBase({ text, color: "white", fill: "#4C4C4C" });
+    const hover = new ButtonBase({ text, color: "white", fill: "#606060" });
+    const active = new ButtonBase({ text, color: "white", fill: "#404040" });
 
     this.timeline.addTween(
       createjs.Tween.get({})

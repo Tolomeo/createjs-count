@@ -4,14 +4,11 @@ import GameMenu from "./GameMenu";
 import GameOver from "./GameOver";
 
 class Game {
-  private stage: createjs.Stage;
-
   private state: ReturnType<typeof createScreenState>;
 
   private screen: keyof ReturnType<typeof createScreenState>["machine"]["states"];
 
-  constructor(stage: createjs.Stage) {
-    this.stage = stage;
+  constructor(private stage: createjs.Stage) {
     this.state = createScreenState(this.onStateChange);
     this.screen = this.state.machine.current;
 

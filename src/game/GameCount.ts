@@ -25,11 +25,15 @@ class GameCount extends createjs.Container {
 
     if (this.buttons[prev]) {
       const button = this.buttons[prev];
-      delete this.buttons[prev];
+
+      button.removeAllEventListeners();
+
       button.fadeOutDown(() => {
         this.removeChild(button);
         if (current === "done") this.props.done();
       });
+
+      delete this.buttons[prev];
     }
   };
 
@@ -51,7 +55,7 @@ class GameCount extends createjs.Container {
 
   render() {
     const buttons = Object.values(this.buttons)
-      .sort((button) => button.number)
+      .sort((b1, b2) => b1.number - b2.number)
       .reverse();
 
     this.addChild(new Background(), ...buttons);
