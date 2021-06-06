@@ -14,6 +14,10 @@ class NumberedButton extends createjs.Container {
     this.button = new Button({ text: String(number) });
     this.addChild(this.button);
   }
+
+  fadeOutDown(onComplete: () => void) {
+    createjs.Tween.get(this.button).to({ y: 50, alpha: 0 }, 350).call(onComplete);
+  }
 }
 
 export default NumberedButton;

@@ -13,6 +13,8 @@ const font = "30px 'Open Sans'";
 class ButtonBase extends createjs.Container {
   label: createjs.Text;
 
+  labelOutline: createjs.Text;
+
   area: createjs.Shape;
 
   shape: createjs.Shape;
@@ -35,6 +37,10 @@ class ButtonBase extends createjs.Container {
     this.label.x = center.x;
     this.label.y = center.y;
 
+    this.labelOutline = this.label.clone();
+    this.labelOutline.color = fill;
+    this.labelOutline.outline = 3;
+
     this.shape = new createjs.Shape(new createjs.Graphics().beginFill(fill).drawRect(0, 0, size, size));
     this.shape.regX = size * 0.5;
     this.shape.regY = size * 0.5;
@@ -43,7 +49,7 @@ class ButtonBase extends createjs.Container {
     this.shape.rotation = 45;
 
     this.setBounds(0, 0, dimensions.width, dimensions.height);
-    this.addChild(this.area, this.shape, this.label);
+    this.addChild(this.area, this.shape, this.labelOutline, this.label);
   }
 }
 

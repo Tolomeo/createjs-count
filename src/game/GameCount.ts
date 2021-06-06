@@ -20,15 +20,16 @@ class GameCount extends createjs.Container {
   }
 
   private onStateChange = () => {
-    if (this.state.machine.current === "done") {
-      this.props.done();
-    }
+    const { current } = this.state.machine;
+    const { prev } = this.state.context;
 
-    const removed = this.state.context.prev;
-
-    if (this.buttons[removed]) {
-      this.removeChild(this.buttons[removed]);
-      delete this.buttons[removed];
+    if (this.buttons[prev]) {
+      const button = this.buttons[prev];
+      delete this.buttons[prev];
+      button.fadeOutDown(() => {
+        this.removeChild(button);
+        if (current === "done") this.props.done();
+      });
     }
   };
 
