@@ -1,52 +1,59 @@
 // import { createMachine, interpret, invoke, state, transition, Service } from "robot3";
 import settings from "../settings";
+import { createCountState } from "./state";
 import Background from "./shared/Background";
 import NumberedButton from "./shared/NumberedButton";
 
 type Props = { done: () => void };
 
 class GameCount extends createjs.Container {
-  private props: Props;
+  state: ReturnType<typeof createCountState>;
 
-  private numberedButtons: NumberedButton[];
+  buttons: Record<number, NumberedButton>;
 
-  constructor(props: Props) {
+  constructor(private props: Props) {
     super();
     this.props = props;
-    this.numberedButtons = this.getNumberedButtons(10);
+    this.state = createCountState(this.onStateChange);
+    this.buttons = this.createNumberedButtons(this.state.context.max);
     this.render();
   }
 
-  private getNumberedButtons(amount: number) {
-    const buttons = [];
+  private onStateChange = () => {
+    if (this.state.machine.current === "done") {
+      this.props.done();
+    }
+
+    const removed = this.state.context.prev;
+
+    if (this.buttons[removed]) {
+      this.removeChild(this.buttons[removed]);
+      delete this.buttons[removed];
+    }
+  };
+
+  private createNumberedButtons(amount: number) {
+    const buttons: { [n: number]: NumberedButton } = {};
     // eslint-disable-next-line no-plusplus
     for (let number = amount; number > 0; number--) {
       const button = new NumberedButton({ number });
       const buttonBounds = button.getBounds();
       button.x = Math.random() * (settings.width - buttonBounds.width);
       button.y = Math.random() * (settings.height - buttonBounds.height);
-      button.on("click", () => this.onNumberedButtonClick(button));
+      button.on("click", () => this.state.send({ type: "count", number }));
 
-      buttons.push(button);
+      buttons[number] = button;
     }
 
     return buttons;
   }
 
-  private onNumberedButtonClick(numberedBox: NumberedButton) {
-    const { numberedButtons } = this;
-
-    if (numberedBox === numberedButtons[numberedButtons.length - 1]) {
-      this.removeChild(numberedButtons.pop()!);
-    }
-
-    if (!numberedButtons.length) {
-      this.props.done();
-    }
-  }
-
   render() {
-    this.addChild(new Background(), ...this.numberedButtons);
+    const buttons = Object.values(this.buttons)
+      .sort((button) => button.number)
+      .reverse();
+
+    this.addChild(new Background(), ...buttons);
   }
 }
 
