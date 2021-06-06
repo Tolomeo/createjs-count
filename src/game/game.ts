@@ -19,33 +19,39 @@ class Game {
 
   constructor(stage: createjs.Stage) {
     this.stage = stage;
-    this.state = interpret(gameMachine, this.onStateChange.bind(this));
+    this.state = interpret(gameMachine, this.onStateChange);
     this.screen = this.state.machine.current;
 
     this.render();
   }
 
-  private onStateChange() {
+  private onStateChange = () => {
     if (this.screen === this.state.machine.current) return;
 
     this.screen = this.state.machine.current;
     this.render();
-  }
+  };
+
+  private start = () => this.state.send("start");
+
+  private done = () => this.state.send("done");
+
+  private restart = () => this.state.send("restart");
+
+  private quit = () => this.state.send("quit");
 
   render() {
     this.stage.removeAllChildren();
 
     switch (this.screen) {
       case "menu":
-        this.stage.addChild(new GameMenu({ start: () => this.state.send("start") }));
+        this.stage.addChild(new GameMenu({ start: this.start }));
         break;
       case "count":
-        this.stage.addChild(new GameCount({ done: () => this.state.send("done") }));
+        this.stage.addChild(new GameCount({ done: this.done }));
         break;
       case "over":
-        this.stage.addChild(
-          new GameOver({ restart: () => this.state.send("restart"), quit: () => this.state.send("quit") }),
-        );
+        this.stage.addChild(new GameOver({ restart: this.restart, quit: this.quit }));
         break;
       default:
     }

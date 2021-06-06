@@ -12,7 +12,7 @@ class NumberedButton extends createjs.Container {
   constructor({ number, onClick }: Props) {
     super();
     this.number = number;
-    this.button = new Button({ text: String(number), width: 50, height: 50 });
+    this.button = new Button({ text: String(number), width: 50, height: 50, radius: 25 });
     this.addChild(this.button);
     this.on("click", () => onClick(this));
     this.setBounds(0, 0, 50, 50);

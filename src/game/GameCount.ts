@@ -1,5 +1,6 @@
 // import { createMachine, interpret, invoke, state, transition, Service } from "robot3";
 import settings from "../settings";
+import Background from "./shared/Background";
 import NumberedButton from "./shared/NumberedButton";
 
 type Props = { done: () => void };
@@ -12,7 +13,7 @@ class GameCount extends createjs.Container {
   constructor(props: Props) {
     super();
     this.props = props;
-    this.numberedButtons = this.getNumberedButtons(5);
+    this.numberedButtons = this.getNumberedButtons(10);
     this.render();
   }
 
@@ -44,7 +45,7 @@ class GameCount extends createjs.Container {
   }
 
   render() {
-    this.addChild(...this.numberedButtons);
+    this.addChild(new Background(), ...this.numberedButtons);
   }
 }
 

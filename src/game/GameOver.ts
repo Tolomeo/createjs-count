@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import settings from "../settings";
+import Background from "./shared/Background";
 import Button from "./shared/Button";
 
 type Props = {
@@ -10,10 +11,6 @@ type Props = {
 class GameOver extends createjs.Container {
   constructor(private props: Props) {
     super();
-
-    const background = new createjs.Shape(
-      new createjs.Graphics().beginFill("blue").drawRect(0, 0, settings.width, settings.height),
-    );
 
     const text = new createjs.Text("You won!", "26px Courier", "yellow");
     const textBounds = text.getBounds();
@@ -38,7 +35,7 @@ class GameOver extends createjs.Container {
     quit.y = settings.height * 0.66;
     quit.on("click", this.props.quit);
 
-    this.addChild(background, text, restart, quit);
+    this.addChild(new Background(), text, restart, quit);
   }
 }
 

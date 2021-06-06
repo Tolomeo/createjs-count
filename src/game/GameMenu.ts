@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import settings from "../settings";
+import Background from "./shared/Background";
 import Button from "./shared/Button";
 
 type Props = {
@@ -9,10 +10,6 @@ type Props = {
 class GameMenu extends createjs.Container {
   constructor(private props: Props) {
     super();
-
-    const background = new createjs.Shape(
-      new createjs.Graphics().beginFill("green").drawRect(0, 0, settings.width, settings.height),
-    );
 
     const text = new createjs.Text("Menu", "26px Courier", "yellow");
     const textBounds = text.getBounds();
@@ -29,7 +26,7 @@ class GameMenu extends createjs.Container {
     start.y = settings.height * 0.5;
     start.on("click", this.props.start);
 
-    this.addChild(background, text, start);
+    this.addChild(new Background(), text, start);
   }
 }
 
