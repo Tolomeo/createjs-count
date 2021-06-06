@@ -20,8 +20,8 @@ class GameMenu extends createjs.Container {
 
     const start = new Button({ text: "Start" });
     const startBounds = start.getBounds();
-    start.regX = startBounds.width * 0.5;
     start.regY = startBounds.height * 0.5;
+    start.regX = startBounds.width * 0.5;
     start.x = settings.width * 0.5;
     start.y = settings.height * 0.5;
     start.on("click", this.props.start);

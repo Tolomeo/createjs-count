@@ -18,18 +18,19 @@ class GameCount extends createjs.Container {
   }
 
   private getNumberedButtons(amount: number) {
-    const boxes = [];
+    const buttons = [];
     // eslint-disable-next-line no-plusplus
     for (let number = amount; number > 0; number--) {
-      const button = new NumberedButton({ number, onClick: this.onNumberedButtonClick.bind(this) });
+      const button = new NumberedButton({ number });
       const buttonBounds = button.getBounds();
       button.x = Math.random() * (settings.width - buttonBounds.width);
       button.y = Math.random() * (settings.height - buttonBounds.height);
+      button.on("click", () => this.onNumberedButtonClick(button));
 
-      boxes.push(button);
+      buttons.push(button);
     }
 
-    return boxes;
+    return buttons;
   }
 
   private onNumberedButtonClick(numberedBox: NumberedButton) {

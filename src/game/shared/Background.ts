@@ -4,7 +4,7 @@ class Background extends createjs.Shape {
   constructor() {
     super(
       new createjs.Graphics()
-        .beginLinearGradientFill(["#183849", "#69D6A8"], [0, 1], 0, settings.width, 0, settings.height)
+        .beginLinearGradientFill(["#FAC988", "#E75C5E"], [0, 1], 0, settings.width, 0, settings.height)
         .drawRect(0, 0, settings.width, settings.height),
     );
 
