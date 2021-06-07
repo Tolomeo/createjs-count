@@ -26,7 +26,7 @@ class GameCount extends createjs.Container {
     if (this.buttons[prev]) {
       const button = this.buttons[prev];
 
-      button.removeAllEventListeners();
+      button.mouseEnabled = false;
 
       button.fadeOutDown(() => {
         this.removeChild(button);
