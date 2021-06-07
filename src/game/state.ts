@@ -41,7 +41,7 @@ export const createCountState = (onChange: () => void) =>
         done: final(),
       },
       (): CountContext => ({
-        max: 10,
+        max: 20,
         next: 1,
         prev: -1,
       }),

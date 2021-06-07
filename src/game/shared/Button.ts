@@ -56,6 +56,10 @@ type Props = {
 };
 
 class Button extends createjs.MovieClip {
+  static sound() {
+    createjs.Sound.play("click");
+  }
+
   helper: createjs.ButtonHelper;
 
   constructor({ text }: Props) {
@@ -78,6 +82,8 @@ class Button extends createjs.MovieClip {
       new createjs.Graphics().beginFill("#000").drawRect(bounds.x, bounds.y, bounds.width, bounds.height),
     );
     this.helper = new createjs.ButtonHelper(this, "normal", "hover", "active", false, hitArea);
+
+    this.on("click", Button.sound);
   }
 }
 

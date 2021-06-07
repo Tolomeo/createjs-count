@@ -1,5 +1,8 @@
 import settings from "./settings";
 import Game from "./game";
+import fadeOutFx from "./sound/fadeout.ogg";
+import gameOverFx from "./sound/gameover.ogg";
+import clickFx from "./sound/click.ogg";
 import "./styles.css";
 
 class App {
@@ -44,6 +47,10 @@ class App {
     createjs.Ticker.on("tick", () => {
       this.stage.update();
     });
+
+    createjs.Sound.registerSound(fadeOutFx, "fadeOut");
+    createjs.Sound.registerSound(gameOverFx, "gameOver");
+    createjs.Sound.registerSound(clickFx, "click");
 
     this.resize();
 

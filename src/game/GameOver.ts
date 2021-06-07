@@ -35,6 +35,8 @@ class GameOver extends createjs.Container {
     quit.y = settings.height * 0.66;
     quit.on("click", this.props.quit);
 
+    createjs.Sound.play("gameOver");
+
     this.addChild(new Background(), text, restart, quit);
   }
 }
