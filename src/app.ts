@@ -1,8 +1,6 @@
 import settings from "./settings";
 import Game from "./game";
-import fadeOutFx from "./sound/fadeout.ogg";
-import gameOverFx from "./sound/gameover.ogg";
-import clickFx from "./sound/click.ogg";
+import Sound from "./sound";
 import "./styles.css";
 
 class App {
@@ -48,9 +46,7 @@ class App {
       this.stage.update();
     });
 
-    createjs.Sound.registerSound(fadeOutFx, "fadeOut");
-    createjs.Sound.registerSound(gameOverFx, "gameOver");
-    createjs.Sound.registerSound(clickFx, "click");
+    Sound.load();
 
     this.resize();
 

@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+import Sound, { Sounds } from "../sound";
 import settings from "../settings";
 import Background from "./shared/Background";
 import Button from "./shared/Button";
@@ -9,6 +10,10 @@ type Props = {
 };
 
 class GameOver extends createjs.Container {
+  static sound() {
+    Sound.play(Sounds.gameOver);
+  }
+
   constructor(private props: Props) {
     super();
 
@@ -35,7 +40,7 @@ class GameOver extends createjs.Container {
     quit.y = settings.height * 0.66;
     quit.on("click", this.props.quit);
 
-    createjs.Sound.play("gameOver");
+    GameOver.sound();
 
     this.addChild(new Background(), text, restart, quit);
   }

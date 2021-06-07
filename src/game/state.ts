@@ -35,7 +35,7 @@ export const createCountState = (onChange: () => void) =>
             "count",
             "count",
             guard((ctx, event) => event.number === ctx.next),
-            reduce((ctx) => ({ ...ctx, next: ctx.next + 1, prev: ctx.next })),
+            reduce((ctx) => ({ ...ctx, prev: ctx.next, next: ctx.next + 1 })),
           ),
         ),
         done: final(),

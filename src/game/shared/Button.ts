@@ -1,4 +1,5 @@
 /* eslint-disable max-classes-per-file */
+import Sound, { Sounds } from "../../sound";
 
 const pythagorean = (sideA: number, sideB: number) => Math.sqrt(sideA ** 2 + sideB ** 2);
 
@@ -57,7 +58,7 @@ type Props = {
 
 class Button extends createjs.MovieClip {
   static sound() {
-    createjs.Sound.play("click");
+    Sound.play(Sounds.click);
   }
 
   helper: createjs.ButtonHelper;

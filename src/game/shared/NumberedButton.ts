@@ -1,3 +1,4 @@
+import Sound, { Sounds } from "../../sound";
 import Button from "./Button";
 
 type Props = {
@@ -16,7 +17,7 @@ class NumberedButton extends createjs.Container {
   }
 
   fadeOutDown(onComplete: () => void) {
-    createjs.Sound.play("fadeOut");
+    Sound.play(Sounds.fadeOut);
     createjs.Tween.get(this.button).to({ y: 50, alpha: 0 }, 500).call(onComplete);
   }
 }
