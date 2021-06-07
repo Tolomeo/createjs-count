@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import settings from "../settings";
+import Text from "./shared/Text";
 import Background from "./shared/Background";
 import Button from "./shared/Button";
 
@@ -11,7 +12,7 @@ class GameMenu extends createjs.Container {
   constructor(private props: Props) {
     super();
 
-    const text = new createjs.Text("Menu", "26px Courier", "yellow");
+    const text = new Text({ text: "JustCount", color: "#404040" });
     const textBounds = text.getBounds();
     text.regX = textBounds.width * 0.5;
     text.regY = textBounds.height * 0.5;

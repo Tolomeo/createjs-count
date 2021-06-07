@@ -1,5 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import Sound, { Sounds } from "../../sound";
+import Text from "./Text";
 
 const pythagorean = (sideA: number, sideB: number) => Math.sqrt(sideA ** 2 + sideB ** 2);
 
@@ -20,7 +21,7 @@ class ButtonBase extends createjs.Container {
 
   constructor({ text, color, fill }: BaseProps) {
     super();
-    this.text = new createjs.Text(text.toUpperCase(), "30px 'Open Sans'", color);
+    this.text = new Text({ text: text.toUpperCase(), color });
 
     const hypotenuse = pythagorean(50, 50);
     const dimensions = {

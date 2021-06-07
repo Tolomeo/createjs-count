@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import Sound, { Sounds } from "../sound";
 import settings from "../settings";
+import Text from "./shared/Text";
 import Background from "./shared/Background";
 import Button from "./shared/Button";
 
@@ -17,7 +18,7 @@ class GameOver extends createjs.Container {
   constructor(private props: Props) {
     super();
 
-    const text = new createjs.Text("You won!", "26px Courier", "yellow");
+    const text = new Text({ text: "Congratulations", color: "#404040" });
     const textBounds = text.getBounds();
     text.regX = textBounds.width * 0.5;
     text.regY = textBounds.height * 0.5;
